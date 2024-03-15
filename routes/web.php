@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\LevelController;
+use App\Http\Controllers\KategoriController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,17 +16,7 @@ use App\Http\Controllers\PenjualanController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::prefix('category')->group(function () {
-    Route::get('/food-beverage', [CategoryController::class, 'foodBeverage']);
-    Route::get('/beauty-health', [CategoryController::class, 'beautyHealth']);
-    Route::get('/home-care', [CategoryController::class, 'homeCare']);
-    Route::get('/baby-kid', [CategoryController::class, 'babyKid']);
-});
-
-Route::get('/user/{id}/name/{name}', [UserController::class, 'show']);
-
-Route::get('/penjualan', [PenjualanController::class, 'index']);
+//Jobsheet 3
+Route::get('/level', [LevelController::class, 'index']);
+Route::get('/kategori', [KategoriController::class, 'index']);
+Route::get('/user', [UserController::class, 'index']);
