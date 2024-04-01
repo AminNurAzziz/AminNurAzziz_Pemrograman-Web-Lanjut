@@ -12,6 +12,7 @@ class UserModel extends Model
     use HasFactory;
 
     protected $table = 'm_user';
+    public $timestamps = false;
     protected $primaryKey = 'user_id';
 
 
