@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\UserModel;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Models\LevelModel;
+use Illuminate\Support\Facades\Log;
+use PgSql\Lob;
 
 class AuthController extends Controller
 {
@@ -17,49 +20,60 @@ class AuthController extends Controller
     public function authenticate(Request $request)
     {
         $credentials = $request->validate([
-            'username' => ['required'],
-            'password' => ['required'],
+            'username' => 'required',
+            'password' => 'required'
         ]);
+        Log::info($credentials);
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
             return redirect()->intended('/');
         }
 
-        return back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
-        ]);
+        return redirect()->route('login')->with('error', 'Username atau password salah.');
+
+        // return back()->withErrors([
+        //     'username' => 'The provided credentials do not match our records.',
+        // ]);
     }
 
     public function register()
     {
-        return view('register');
+        $level_id = LevelModel::all();
+        return view('register', ['level_id' => $level_id]);
     }
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'username' => 'required|max:255|unique:m_user,username',
-            'nama' => 'required|max:255',
-            'password' => 'required|min:6',
+        $request->validate([
+            'username' => 'required|string|min:3|unique:m_user,username',
+            'nama' => 'required|string|max:100',
+            'password' => 'required|min:5',
+            'level_id' => 'required|integer',
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $validatedData['password'] = Hash::make($validatedData['password']);
-
-        // Handle File Upload
         if ($request->hasFile('picture')) {
-            // Store the file and save the path in the $validatedData array under the appropriate key
-            // Ensure the key 'profile_picture' matches the column name in your database
-            $validatedData['profile_picture'] = $request->file('picture')->store('profiles', 'public');
+            $file = $request->file('picture');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            // Save the file directly in the public directory under 'profile_picture'
+            $file->move(public_path('profile_picture'), $filename);
         } else {
-            $validatedData['profile_picture'] = null; // Default or placeholder image path
+            $filename = 'default.jpg';
         }
 
-        UserModel::create($validatedData);
+        UserModel::create([
+            'username' => $request->username,
+            'nama' => $request->nama,
+            'password' => bcrypt($request->password),
+            'level_id' => $request->level_id,
+            'profile_picture' => $filename, // Make sure this matches your database and $fillable array
+        ]);
 
-        return redirect('/login')->with('success', 'Your account has been successfully created. Please log in.');
+        return redirect('/login');
     }
+
 
 
     public function logout(Request $request)
@@ -69,6 +83,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }

@@ -30,8 +30,12 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{{ url('/')}}" class="brand-link">
-      <img src="{{ asset('adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <a href="{{ url('/') }}" class="brand-link">
+      @if ($user && !empty($user->profile_picture))
+      <img src="{{ asset('/profile_picture/' . $user->profile_picture) }}" alt="User Profile Picture" class="brand-image img-circle elevation-3" style="opacity: .8">
+      @else
+          <img src="{{ asset('adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      @endif
       <span class="brand-text font-weight-light">PWL - Starter Code</span>
     </a>
 

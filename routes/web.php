@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\POSController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LevelController;
@@ -29,7 +30,7 @@ use App\Http\Controllers\PenjualanDetailController;
 // Route::get('/level', [LevelController::class, 'index']);
 
 // Group routes under '/kategori' prefix
-Route::prefix('kategori')->group(function () {
+Route::prefix('kategori')->middleware('auth')->group(function () {
     // Define resourceful routes for categories
     Route::get('/', [KategoriController::class, 'index'])->name('kategori.index');
     Route::post('/', [KategoriController::class, 'store'])->name('kategori.store');
@@ -55,9 +56,9 @@ Route::prefix('kategori')->group(function () {
 
 // Route::resource('m_user', POSController::class);
 
-Route::get('/', [WelcomeController::class, 'index']);
+Route::get('/', [WelcomeController::class, 'index'])->middleware('auth');
 
-Route::group(['prefix' => 'user'], function () {
+Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::get('/', [UserController::class, 'index'])->name('user.index'); //menampilkan halaman awal user
     Route::post('/list', [UserController::class, 'list'])->name('user.list'); //ambil data user dalam bentuk json untuk datatables
     Route::get('/create', [UserController::class, 'create'])->name('user.create'); //menampilkan halaman form tambah
@@ -69,12 +70,19 @@ Route::group(['prefix' => 'user'], function () {
 });
 
 
-Route::resource('barang', BarangController::class);
+Route::resource('barang', BarangController::class)->middleware('auth');
 
-Route::resource('stok', StokController::class);
+Route::resource('stok', StokController::class)->middleware('auth');
 
-Route::resource('penjualan', PenjualanController::class);
+Route::resource('penjualan', PenjualanController::class)->middleware('auth');
 
-Route::resource('penjualan_detail', PenjualanDetailController::class);
+Route::resource('penjualan_detail', PenjualanDetailController::class)->middleware('auth');
 
-Route::resource('level', LevelController::class);
+Route::resource('level', LevelController::class)->middleware('auth');
+
+// Login
+Route::get('login', [AuthController::class, 'login'])->name('login');
+Route::post('login', [AuthController::class, 'authenticate']);
+Route::get('register', [AuthController::class, 'register'])->name('register');
+Route::post('register', [AuthController::class, 'store']);
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');

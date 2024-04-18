@@ -1,61 +1,65 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Register</div>
-                <div class="card-body">
-                    <form method="POST" action="{{ url('register') }} enctype="multipart/form-data"">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
-                            @error('username')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="nama" class="form-label">Full Name</label>
-                            <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" value="{{ old('nama') }}" required autocomplete="nama">
-                            @error('nama')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required autocomplete="new-password">
-                            @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="level_id" class="form-label">Level</label>
-                            <select class="form-select" id="level_id" name="level_id" required>
-                                @foreach(App\Models\LevelModel::all() as $level)
-                                    <option value="{{ $level->level_id }}">{{ $level->level_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <input type="file" name="picture" accept="image/*"> 
-
-                        <div class="mb-3">
-                            <button type="submit" class="btn btn-primary">Register</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Include Bootstrap CSS from CDN -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+<form method="POST" action="{{ url('register') }}" enctype="multipart/form-data" class="p-3">
+    @csrf
+    <div class="form-group mb-3">
+        <label for="nama" class="form-label">Name</label>
+        <input type="text" class="form-control" id="nama" name="nama" placeholder="Enter your name" required>
     </div>
+    <div class="form-group mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Choose a username" required>
+    </div>
+    <div class="form-group mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Create a password" required>
+    </div>
+    <div class="form-group mb-3">
+        <label for="level_id" class="form-label">Level</label>
+        <select name="level_id" id="level_id" class="form-control">
+            @foreach ($level_id as $data)
+            <option value="{{$data->level_id}}">{{$data->level_nama}}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group mb-3">
+        <label for="picture" class="form-label">Profile Picture</label>
+        <input type="file" class="form-control" id="picture" name="picture" accept="image/*">
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
 </div>
-@endsection
+
+<!-- Include Bootstrap JS and its dependencies (Optional, for dynamic components) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
+{{-- <form method="POST" action="{{ url('register') }}" enctype="multipart/form-data">
+    @csrf
+    <input type="text" name="nama" placeholder="Name" required>
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="password" name="password" placeholder="password" required>
+    <strong>Level :</strong>
+    <select name="level_id" class="form-control">
+    @foreach ($level_id as $data)   
+    <option value="{{$data->level_id}}">{{$data->level_nama}}</option>
+    @endforeach
+    </select>
+    <input type="file" name="picture" accept="image/*"> 
+    
+    <button type="submit">Register</button>
+</form> --}}

@@ -5,6 +5,10 @@
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
                 <a class="btn btn-sm btn-primary mt-1" href="{{ url('user/create') }}">Tambah</a>
+                
+                <button onclick="window.print()" class="btn btn-sm btn-secondary mt-1">Download Page</button>
+                <a href="{{ route('user.excel') }}" class="btn btn-sm btn-success mt-1">Export to Excel</a>
+
             </div>
         </div>
         <div class="card-body">
@@ -16,8 +20,11 @@
             @endif
             <div class="row">
                 <div class="col-md-12">
+                    
                     <div class="form-group row">
                         <label class="col-1 control-label col-form-label">Filter:</label>
+
+
                         <div class="col-3">
                             <select class="form-control" id="level_id" name="level_id" required>
                                 <option value="">- Semua -</option>

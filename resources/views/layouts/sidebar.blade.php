@@ -58,6 +58,17 @@
                     <p>Transaksi Penjualan</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <!-- Use a form for logout to protect against CSRF -->
+                <a href="#" class="nav-link {{ $activeMenu == 'logout' ? 'active' : '' }}"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <p>Logout</p>
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            </li>
         </ul>
     </nav>
 </div>
