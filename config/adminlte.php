@@ -330,7 +330,7 @@ return [
         ],
         [
             'text' => 'Manage User',
-            'url' => 'm_user',
+            'url' => 'user',
             'icon' => 'fas fa-fw fa-user',
         ],
         // [

@@ -1,13 +1,12 @@
-@extends('layout.app')
-{{-- @extends('m_user/template')  --}}
+@extends('layouts.template')
 @section('content') 
-<div class="row mb-5"> 
-<div class="col-lg-12 mt-5 margin-tb"> 
+<div class="row mb-3"> 
+<div class="col-lg-12 mt-3 margin-tb"> 
 <div class="float-left"> 
 <h2>Membuat Daftar User</h2> 
 </div> 
 <div class="float-right"> 
-<a class="btn btn-secondary" href="{{ route('m_user.index') }}">Kembali</a> 
+<a class="btn btn-secondary" href="{{ route('user.index') }}">Kembali</a> 
 </div> 
 </div> 
 </div> 
@@ -21,7 +20,7 @@
 </ul> 
 </div> 
 @endif 
-<form action="{{ route('m_user.store') }}" method="POST"> 
+<form action="{{ route('user.store') }}" method="POST"> 
 @csrf 
 <div class="col-xs-12 col-sm-12 col-md-12"> 
 <div class="form-group"> 
@@ -59,7 +58,6 @@ placeholder="Masukkan password"></input>
         </div> 
 <div class="col-xs-12 col-sm-12 col-md-12 text-center"> 
 <button type="submit" class="btn btn-primary">Submit</button> 
-</div> 
 </div> 
 </form> 
 @endsection 

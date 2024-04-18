@@ -1,13 +1,20 @@
-@extends('layout.app')
-{{-- @extends('m_user/template')  --}}
-@section('content') 
+@extends('layouts.template')
+
+{{-- Customize layout sections --}}
+@section('subtitle', 'Level')
+@section('content_header_title', 'Level')
+@section('content_header_subtitle', 'Level')
+
+{{-- Content --}}
+
+@section('content')
 <div class="row mb-5"> 
 <div class="col-lg-12 mt-5 margin-tb"> 
 <div class="float-left"> 
 <h2> Show User</h2> 
 </div> 
 <div class="float-right"> 
-<a class="btn btn-secondary" href="{{ route('m_user.index') }}"> 
+<a class="btn btn-secondary" href="{{ route('user.index') }}"> 
 Kembali</a> 
 </div> 
 </div> 
