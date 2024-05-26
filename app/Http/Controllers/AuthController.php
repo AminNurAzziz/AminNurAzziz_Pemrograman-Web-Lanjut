@@ -12,30 +12,45 @@ use PgSql\Lob;
 
 class AuthController extends Controller
 {
-    public function login()
+    public function index()
     {
+        $user = Auth::user();
+
+        if ($user) {
+            if ($user->level_id == 1) {
+                return redirect('/admin');
+            } else if ($user->level_id == 2) {
+                return redirect('/manager');
+            }
+        }
         return view('login');
     }
 
-    public function authenticate(Request $request)
+    public function proses_login(Request $request)
     {
-        $credentials = $request->validate([
+        $request->validate([
             'username' => 'required',
-            'password' => 'required'
+            'password' => 'required',
         ]);
-        Log::info($credentials);
+
+        $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/');
+            $user = Auth::user();
+
+            if ($user->level_id == 1) {
+                return redirect('/admin');
+            } else if ($user->level_id == 2) {
+                return redirect('/manager');
+            }
+            return redirect()->intended('/login');
         }
 
-        return redirect()->route('login')->with('error', 'Username atau password salah.');
-
-        // return back()->withErrors([
-        //     'username' => 'The provided credentials do not match our records.',
-        // ]);
+        return redirect('/login')->withInput()->withErrors([
+            'login_gagal' => 'Username atau password salah.',
+        ]);
     }
 
     public function register()
@@ -44,32 +59,19 @@ class AuthController extends Controller
         return view('register', ['level_id' => $level_id]);
     }
 
-    public function store(Request $request)
+    public function proses_register(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|min:3|unique:m_user,username',
-            'nama' => 'required|string|max:100',
-            'password' => 'required|min:5',
-            'level_id' => 'required|integer',
-            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'username' => 'required',
+            'password' => 'required',
+            'level_id' => 'required',
         ]);
 
-        if ($request->hasFile('picture')) {
-            $file = $request->file('picture');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            // Save the file directly in the public directory under 'profile_picture'
-            $file->move(public_path('profile_picture'), $filename);
-        } else {
-            $filename = 'default.jpg';
-        }
-
-        UserModel::create([
-            'username' => $request->username,
-            'nama' => $request->nama,
-            'password' => bcrypt($request->password),
-            'level_id' => $request->level_id,
-            'profile_picture' => $filename, // Make sure this matches your database and $fillable array
-        ]);
+        $user = new UserModel();
+        $user->username = $request->username;
+        $user->password = Hash::make($request->password);
+        $user->level_id = $request->level_id;
+        $user->save();
 
         return redirect('/login');
     }
@@ -81,6 +83,7 @@ class AuthController extends Controller
         Auth::logout();
 
         $request->session()->invalidate();
+
         $request->session()->regenerateToken();
 
         return redirect('/login');
