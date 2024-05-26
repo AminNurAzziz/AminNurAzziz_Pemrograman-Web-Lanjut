@@ -15,11 +15,13 @@ class UserModel extends Authenticatable implements JWTSubject
     public $timestamps = true;
     protected $primaryKey = 'user_id';
 
+
     protected $fillable = [
         'level_id',
         'username',
         'nama',
-        'password'
+        'password',
+        'image'
     ];
 
     public function level(): BelongsTo
