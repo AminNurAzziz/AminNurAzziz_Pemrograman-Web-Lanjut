@@ -189,20 +189,20 @@ class UserController extends Controller
     }
 
     //Export data user ke pdf
-    public function exportPdf()
-    {
-        $users = UserModel::all(); //ambil semua data user
+    // public function exportPdf()
+    // {
+    //     $users = UserModel::all(); //ambil semua data user
 
-        // return view('user.pdf', ['users' => $users]); //load view pdf.blade.php dan kirim data user
+    //     // return view('user.pdf', ['users' => $users]); //load view pdf.blade.php dan kirim data user
 
-        $pdf = Pdf::loadView('user.pdf', ['users' => $users]); //load view pdf.blade.php dan kirim data user
+    //     $pdf = Pdf::loadView('user.pdf', ['users' => $users]); //load view pdf.blade.php dan kirim data user
 
-        return $pdf->download('data_user.pdf'); //download file pdf
-    }
+    //     return $pdf->download('data_user.pdf'); //download file pdf
+    // }
 
-    //Export data user ke excel
-    public function exportExcel()
-    {
-        return Excel::download(new UsersExport, 'data_user.xlsx'); //download file excel
-    }
+    //Export data user ke excell
+    // public function exportExcel()
+    // {
+    //     return Excel::download(new UsersExport, 'data_user.xlsx'); //download file excel
+    // }
 }

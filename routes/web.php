@@ -67,6 +67,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::get('/{id}/edit', [UserController::class, 'edit'])->name('user.edit'); //menampilkan halaman form edit
     Route::put('/{id}', [UserController::class, 'update'])->name('user.update'); //mengupdate data user
     Route::delete('/{id}', [UserController::class, 'destroy'])->name('user.destroy'); //menghapus data user
+    Route::get('/export', [UserController::class, 'export'])->name('user.excel'); //export data user ke excel
 });
 
 

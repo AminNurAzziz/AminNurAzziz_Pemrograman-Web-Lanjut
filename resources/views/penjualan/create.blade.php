@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layouts.template')
 
 @section('subtitle', 'Penjualan')
 @section('content_header_title', 'Penjualan')

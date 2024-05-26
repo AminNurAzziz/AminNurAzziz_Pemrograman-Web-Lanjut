@@ -46,20 +46,3 @@
 </body>
 </html>
 
-
-
-{{-- <form method="POST" action="{{ url('register') }}" enctype="multipart/form-data">
-    @csrf
-    <input type="text" name="nama" placeholder="Name" required>
-    <input type="text" name="username" placeholder="Username" required>
-    <input type="password" name="password" placeholder="password" required>
-    <strong>Level :</strong>
-    <select name="level_id" class="form-control">
-    @foreach ($level_id as $data)   
-    <option value="{{$data->level_id}}">{{$data->level_nama}}</option>
-    @endforeach
-    </select>
-    <input type="file" name="picture" accept="image/*"> 
-    
-    <button type="submit">Register</button>
-</form> --}}
